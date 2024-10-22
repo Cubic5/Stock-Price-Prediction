@@ -51,5 +51,5 @@ if st.button('Predict'):
 
 
 # Required to let Streamlit instantiate our web app.
-if __name__ = '__main_':
+if __name__ == '__main_':
         main()
