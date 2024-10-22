@@ -57,7 +57,7 @@ if st.button('Get Data'):
         st.write(data)
 
         # Apply the Box-Cox transformation
-        transformed_data = apply_boxcox_transormation(data)
+        transformed_data = apply_boxcox_transformation(data)
         st.write('Stock Data (After Box-Cox Transformation):')
         st.write(transformed_data)
 
