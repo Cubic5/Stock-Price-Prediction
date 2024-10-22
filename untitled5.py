@@ -29,7 +29,7 @@ def fetch_stock_data(ticker, start_date, end_date):
 # Define a function to apply Box-Cox transformation
 def apply_boxcox_transformation(data):
     df_arima = data[['Close']] # Extract the 'Close' price column
-    df_arima['Close'], _ = boxcox(df_arima['Close'])
+    df_arima['Close'], _ = boxcox(df_arima['Close'], lambda=0)
     return df_arima
 
 # Define a function to make predictions
@@ -45,6 +45,10 @@ ticker = st.text_input('Enter the stock ticker symbol (e.g. AAPL)')
 start_date = st.date_input('Select the start date')
 end_date = st.date_input('Select the end date')
 
+# Initialize session state for transformed_data
+if 'transformed_data' not in st.session_state:
+    st.session_state.transformed_data = None
+
 # Fetch and display the stock data
 if st.button('Get Data'):
     data = fetch_stock_data(ticker, start_date, end_date)
@@ -53,20 +57,24 @@ if st.button('Get Data'):
     if data.empty:
         st.write('No data found for the select date range and ticker.')
     else:
-        st.write('Stock Data:')
+        st.write('Stock Data (Original):')
         st.write(data)
 
         # Apply the Box-Cox transformation
-        transformed_data = apply_boxcox_transformation(data)
+        st.session_state.transformed_data = apply_boxcox_transformation(data)
         st.write('Stock Data (After Box-Cox Transformation):')
         st.write(transformed_data)
 
 
-# Make Predictions
+# Only enable Predictions if transformed_data is available
 if st.button('Predict'):
-    prediction = predict_stock_price(saved_model, transformed_data)
-    st.write('Predicted Stock Prices (Ater Transformation):')
-    st.write(prediction)
+    if st.session_state.transformed_data is not None:
+        # Make predictions on the transformed data
+        prediction = predict_stock_price(saved_model, st.session_state.transformed_data)
+        st.write('Predicted Stock Prices (Ater Transformation):')
+        st.write(prediction)
+    else:
+        st.write('Please etch the data first.')
 
 
 # Required to let Streamlit instantiate our web app.
