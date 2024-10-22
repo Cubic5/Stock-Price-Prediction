@@ -63,7 +63,7 @@ if st.button('Get Data'):
         # Apply the Box-Cox transformation
         st.session_state.transformed_data = apply_boxcox_transformation(data)
         st.write('Stock Data (After Box-Cox Transformation):')
-        st.write(transformed_data)
+        st.write(st.session_state.transformed_data)
 
 
 # Only enable Predictions if transformed_data is available
