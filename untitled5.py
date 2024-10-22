@@ -58,16 +58,16 @@ else:
         data = fetch_stock_data(ticker, start_date, end_date)
 
 
-    if data.empty:
-        st.write('No data found for the select date range and ticker.')
-    else:
-        st.write('Stock Data (Original):')
-        st.write(data)
+        if data.empty:
+            st.write('No data found for the select date range and ticker.')
+        else:
+            st.write('Stock Data (Original):')
+            st.write(data)
 
-        # Apply the Box-Cox transformation
-        st.session_state.transformed_data = apply_boxcox_transformation(data)
-        st.write('Stock Data (After Box-Cox Transformation):')
-        st.write(st.session_state.transformed_data)
+            # Apply the Box-Cox transformation
+            st.session_state.transformed_data = apply_boxcox_transformation(data)
+            st.write('Stock Data (After Box-Cox Transformation):')
+            st.write(st.session_state.transformed_data)
 
 
 # Only enable Predictions if transformed_data is available
