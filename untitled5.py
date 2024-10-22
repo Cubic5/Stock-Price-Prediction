@@ -45,8 +45,8 @@ ticker = st.text_input('Enter the stock ticker symbol (e.g. AAPL)')
 start_date = st.date_input('Select the start date')
 end_date = st.date_input('Select the end date')
 
-# GValidate dates
-if start_date ) end_date:
+# Validate dates
+if start_date > end_date:
     st.error('Error: Start date must be before end date.')
 else:
     # Initialize session state for transformed_data
