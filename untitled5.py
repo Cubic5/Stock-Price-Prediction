@@ -7,6 +7,8 @@ Original file is located at
     https://colab.research.google.com/drive/108mOW0xIJ8_685bMtry0a-8POx6JOmQX
 """
 
+pip install --upgrade matplotlib
+
 
 # Importing the libraries
 import streamlit as st
