@@ -7,13 +7,13 @@ Original file is located at
     https://colab.research.google.com/drive/108mOW0xIJ8_685bMtry0a-8POx6JOmQX
 """
 # Installing libraries
-!pip install streamlit
-!pip install pandas
-!pip install numpy
-!pip install matplotlib
-!pip install seaborn
-!pip install yfinance
-!pip install joblib
+pip install streamlit
+pip install pandas
+pip install numpy
+pip install matplotlib
+pip install seaborn
+pip install yfinance
+pip install joblib
 
 # Importing the libraries
 import streamlit as st
