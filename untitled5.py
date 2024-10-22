@@ -13,16 +13,24 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.stats import boxcox
 import seaborn as sns
 import yfinance as yf
 import joblib, os
 
+# Loading the saved model
 saved_model = joblib.load('arima_model.pkl')
 
 # Define a function to fetch the stock data
 def fetch_stock_data(ticker, start_date, end_date):
     stock_data = yf.download(ticker, start=start_date, end=end_date)
     return stock_data
+
+# Define a function to apply Box-Cox transformation
+def apply_boxcox_transformation(data):
+    df_arima = data[['Close']] # Extract the 'Close' price column
+    df_arima['Close'], _ = boxcox(df_arima['Close'])
+    return df_arima
 
 # Define a function to make predictions
 def predict_stock_price(model, data):
@@ -48,11 +56,16 @@ if st.button('Get Data'):
         st.write('Stock Data:')
         st.write(data)
 
+        # Apply the Box-Cox transformation
+        transformed_data = apply_boxcox_transormation(data)
+        st.write('Stock Data (After Box-Cox Transformation):')
+        st.write(transformed_data)
+
 
 # Make Predictions
 if st.button('Predict'):
-    prediction = predict_stock_price(saved_model, data)
-    st.write('Predicted Stock Prices:')
+    prediction = predict_stock_price(saved_model, transformed_data)
+    st.write('Predicted Stock Prices (Ater Transformation):')
     st.write(prediction)
 
 
