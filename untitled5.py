@@ -21,12 +21,12 @@ saved_model = joblib.load('arima_model.pkl')
 
 # Define a function to fetch the stock data
 def fetch_stock_data(ticker, start_date, end_date):
-    data = yf.download(ticker, start=start_date, end=end_date)
-    return data
+    stock_data = yf.download(ticker, start=start_date, end=end_date)
+    return stock_data
 
 # Define a function to make predictions
 def predict_stock_price(model, data):
-    prediction = saved_model.predict(data)
+    prediction = model.predict(data)
     return prediction
 
 # Streamlit App
@@ -38,9 +38,15 @@ start_date = st.date_input('Select the start date')
 end_date = st.date_input('Select the end date')
 
 # Fetch and display the stock data
-if st.button('Fetch Data'):
+if st.button('Get Data'):
     data = fetch_stock_data(ticker, start_date, end_date)
-    st.write('data')
+
+
+    if data.empty:
+        st.write('No data found for the select date range and ticker.')
+    else:
+        st.write('Stock Data:')
+        st.write(data)
 
 
 # Make Predictions
