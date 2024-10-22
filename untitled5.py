@@ -29,7 +29,7 @@ def fetch_stock_data(ticker, start_date, end_date):
 # Define a function to apply Box-Cox transformation
 def apply_boxcox_transformation(data):
     df_arima = data[['Close']] # Extract the 'Close' price column
-    df_arima['Close'], _ = boxcox(df_arima['Close'], lambda=0)
+    df_arima['Close'], _ = boxcox(df_arima['Close'])
     return df_arima
 
 # Define a function to make predictions
