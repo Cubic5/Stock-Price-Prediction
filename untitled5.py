@@ -35,7 +35,8 @@ def fetch_stock_data(ticker, start_date, end_date):
 
 # Define a function to apply Box-Cox transformation
 def apply_boxcox_transformation(data):
-    df_arima = data[['Close']] # Extract the 'Close' price column
+    data.index = pd.to_datetime(data.index)
+    df_arima = data[['Close']].copy() # Extract the 'Close' price column
     df_arima['Close'], _ = boxcox(df_arima['Close'])
     return df_arima
 
