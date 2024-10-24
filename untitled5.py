@@ -70,15 +70,15 @@ else:
             st.write(st.session_state.transformed_data)
 
 
-# Only enable Predictions if transformed_data is available
-if st.button('Predict'):
-    if st.session_state.transformed_data is not None:
-        # Make predictions on the transformed data
-        prediction = predict_stock_price(saved_model, st.session_state.transformed_data)
-        st.write('Predicted Stock Prices (Ater Transformation):')
-        st.write(prediction)
-    else:
-        st.write('Please etch the data first.')
+    # Only enable Predictions if transformed_data is available
+    if st.button('Predict'):
+        if st.session_state.transformed_data is not None:
+            # Make predictions on the transformed data
+            prediction = predict_stock_price(saved_model, st.session_state.transformed_data)
+            st.write('Predicted Stock Prices (Ater Transformation):')
+            st.write(prediction)
+        else:
+            st.write('Please etch the data first.')
 
 
 # Required to let Streamlit instantiate our web app.
