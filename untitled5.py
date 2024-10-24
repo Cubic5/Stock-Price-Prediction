@@ -17,14 +17,21 @@ from scipy.stats import boxcox
 import seaborn as sns
 import yfinance as yf
 import joblib, os
+from datetime import datetime
 
 # Loading the saved model
 saved_model = joblib.load('arima_model.pkl')
 
 # Define a function to fetch the stock data
 def fetch_stock_data(ticker, start_date, end_date):
-    stock_data = yf.download(ticker, start=start_date, end=end_date)
-    return stock_data
+    try:
+        stock_data = yf.download(ticker, start=start_date, end=end_date)
+        if stock_data.empty:
+            raise ValueError('No data available for the selected date range and ticker.')
+        return stock_data
+    except Exception as e:
+        st.error(f"Error fetching data: {e}")
+        return pd.DataFrame()
 
 # Define a function to apply Box-Cox transformation
 def apply_boxcox_transformation(data):
@@ -45,6 +52,10 @@ ticker = st.text_input('Enter the stock ticker symbol (e.g. AAPL)')
 start_date = st.date_input('Select the start date')
 end_date = st.date_input('Select the end date')
 
+# Convert start_date and end_date to string format 'YYYY-MM-DD'
+start_date_str = start_date.strftime('%Y-%m-%d')
+end_date_str = end_date.strftime('%Y-%m-%d')
+
 # Validate dates
 if start_date > end_date:
     st.error('Error: Start date must be before end date.')
@@ -55,7 +66,7 @@ else:
 
     # Fetch and display the stock data
     if st.button('Get Data'):
-        data = fetch_stock_data(ticker, start_date, end_date)
+        data = fetch_stock_data(ticker, start_date_str, end_date_str)
 
 
         if data.empty:
