@@ -53,9 +53,6 @@ ticker = st.text_input('Enter the stock ticker symbol (e.g. AAPL)')
 start_date = st.date_input('Select the start date')
 end_date = st.date_input('Select the end date')
 
-# Convert start_date and end_date to string format 'YYYY-MM-DD'
-start_date_str = start_date.strftime('%Y-%m-%d')
-end_date_str = end_date.strftime('%Y-%m-%d')
 
 # Validate dates
 if start_date > end_date:
