@@ -64,7 +64,7 @@ else:
 
     # Fetch and display the stock data
     if st.button('Get Data'):
-        data = fetch_stock_data(ticker, start_date_str, end_date_str)
+        data = fetch_stock_data(ticker, start_date, end_date)
 
 
         if data.empty:
