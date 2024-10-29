@@ -20,7 +20,7 @@ import joblib, os
 from datetime import datetime
 
 # Loading the saved model
-saved_model = joblib.load('arima_model.pkl')
+saved_model = joblib.load('boxcox_arima_model.pkl')
 
 # Define a function to fetch the stock data
 def fetch_stock_data(ticker, start_date, end_date):
