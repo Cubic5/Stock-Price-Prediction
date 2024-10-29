@@ -42,6 +42,8 @@ def apply_boxcox_transformation(data):
 
 # Define a function to make predictions
 def predict_stock_price(model, data):
+    if isinstance(data.index, pd.DatetimeIndex):
+        data = data.reset_index(drop=True)
     prediction = model.predict(data)
     return prediction
 
