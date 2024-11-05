@@ -30,9 +30,10 @@ def apply_boxcox_transformation(data):
     data['Date'] = data['Date'].dt.tz_localize(None)
     # data = set_index('Date')
     df_arima = data[['Date','Close']].copy() # Extract the 'Close' price column
-    df_arima['Close'], _ = boxcox(df_arima['Close'])
+    df_arima['Close'], lambda_value = boxcox(df_arima['Close'])
+    st.write(f'Lambda value used for Box-Cox transformation: {lambda_value}')
     #df_arima['Date'] = df_arima['Date'].dt.tz_localize(None)
-    return df_arima
+    return df_arima, lambda_value
 
 def train_arima_model(data):
     model = ARIMA(data['Close'], order=(3,1,2))
