@@ -88,7 +88,7 @@ else:
         if st.session_state.transformed_data is not None:
             try:
                 # Make predictions on the transformed data
-                prediction = predict_stock_price(saved_model, st.session_state.transformed_data)
+                prediction_df = predict_stock_price(saved_model, st.session_state.transformed_data)
                 st.write('Predicted Stock Prices (With Dates):')
                 st.write(prediction_df)
             except Exception as e:
