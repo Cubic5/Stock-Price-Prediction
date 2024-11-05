@@ -46,6 +46,10 @@ def predict_stock_price(model, data):
 
     try:
         prediction = model.predict(start=0, end=len(transformed_data) - 1)
+
+        # Generate a date range starting from the last date in the original data
+        last_date = data['Date'].iloc[-1]
+        prediction_dates = pd.date_range(start=last_date, periods=len(prediction) + 1, freq='B')[1:]
         # Combine the dates with the predictions
         predicted_df = pd.DataFrame({
             'Date': data['Date'].values,
