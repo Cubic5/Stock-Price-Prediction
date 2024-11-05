@@ -80,10 +80,10 @@ else:
             # Apply the Box-Cox transformation for the current ticker
             st.session_state.transformed_data = apply_boxcox_transfformation(data)
             st.write('Stock Data (After Box-Cox Transformation):')
-            st.write(sr.session_state.transformed_data)
+            st.write(st.session_state.transformed_data)
 
             # Train a new model and store it in session state
-            st.session_state.model = train_arima_model(st.session_state.transformed_data
+            st.session_state.model = train_arima_model(st.session_state.transformed_data)
 
   
     # Only enable Predictions if transformed_data is available
