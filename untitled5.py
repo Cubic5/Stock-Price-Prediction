@@ -117,7 +117,7 @@ else:
                 # Make predictions on the transformed data
                 prediction = predict_stock_price(saved_model, st.session_state.transformed_data)
                 st.write('Predicted Stock Prices (Original Scale):')
-                st.write(prediction_df)
+                st.write(prediction)
             except Exception as e:
                 st.error(f'Prediction error: {e}')
         else:
