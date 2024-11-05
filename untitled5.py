@@ -39,7 +39,7 @@ def predict_stock_price(model, data):
     transformed_data = data[['Close']].reset_index(drop=True)
 
     try:
-        prediction = model.predict(transformed_data)
+        prediction = model.predict(start=0, end=len(transformed_data) - 1)
         return prediction
     except Exception as e:
         raise ValueError(f'Error in prediction: {e}')
