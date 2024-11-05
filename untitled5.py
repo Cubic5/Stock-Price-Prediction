@@ -40,7 +40,7 @@ def apply_boxcox_transformation(data):
     data['Date'] = data['Date'].dt.tz_localize(None)
     # data = set_index('Date')
     df_arima = data[['Date','Close']].copy() # Extract the 'Close' price column
-    df_arima['Close'], lambda_value = boxcox(df_arima['Close'])
+    df_arima['Close'], lambda_value = boxcox(df_arima['Close'], lmbda=0)
     df_arima['Date'] = df_arima['Date'].dt.tz_localize(None)
     st.session_state.lambda_value = lambda_value
     return df_arima
@@ -48,8 +48,8 @@ def apply_boxcox_transformation(data):
 
 # Define a function to reverse the Box-Cox transformation
 def reverse_boxcox_transformation(predicted_data, lambda_value):
-    # Apply the inverse Box-Cox transformation
-    predicted_data['Predicted_Close'] = inv_boxcox(predicted_data['Predicted_Close'], lambda_value)
+    # Appy the inverse Box-Cox transformation
+    predicted_data['Predicted_Close'] = inv_boxcox(predicted_data['Predicted_Close'],lambda_value) 
     return predicted_data
     
 
