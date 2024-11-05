@@ -51,12 +51,15 @@ def predict_stock_price(model, data):
     try:
         # Attempt prediction with transformed data
         prediction = model.predict(start=0, end=len(transformed_data) - 1)
-        return prediction
+      
+        # Combine the dates with predictions
+        predicted_df = pd.DataFrame({  'Date': data['Date'].values,
+            'Predicted_Close': prediction
+            })
+          return predicted_df
     except Exception as e:
         raise ValueError(f'Error in prediction: {e}')
 
-        # Combine the dates with predictions
-            'Date': data['Date'].values,
     
 
 # Streamlit App
