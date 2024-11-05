@@ -56,7 +56,7 @@ def predict_stock_price(model, data):
         predicted_df = pd.DataFrame({  'Date': data['Date'].values,
             'Predicted_Close': prediction
             })
-          return predicted_df
+        return predicted_df
     except Exception as e:
         raise ValueError(f'Error in prediction: {e}')
 
