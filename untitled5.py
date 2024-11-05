@@ -14,6 +14,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import boxcox
+from scipy.special import inv_boxcox
 import seaborn as sns
 import yfinance as yf
 import joblib, os
@@ -39,9 +40,18 @@ def apply_boxcox_transformation(data):
     data['Date'] = data['Date'].dt.tz_localize(None)
     # data = set_index('Date')
     df_arima = data[['Date','Close']].copy() # Extract the 'Close' price column
-    df_arima['Close'], _ = boxcox(df_arima['Close'])
+    df_arima['Close'], lambda_value = boxcox(df_arima['Close'])
     df_arima['Date'] = df_arima['Date'].dt.tz_localize(None)
+    st.session_state.lambda_value = lambda_value
     return df_arima
+
+
+# Define a function to reverse the Box-Cox transformation
+def reverse_boxcox_transformation(predicted_data, lambda_value):
+    # Apply the inverse Box-Cox transformation
+    predicted_data['Predicted_Close'] = inv_boxcox(predicted_data['Predicted_Close'], lambda_value)
+    return predicted_data
+    
 
 # Define a function to make predictions
 def predict_stock_price(model, data):
@@ -56,6 +66,10 @@ def predict_stock_price(model, data):
         predicted_df = pd.DataFrame({  'Date': data['Date'].values,
             'Predicted_Close': prediction
             })
+
+        # Reverse the Box-Cox transformation
+        if 'lambda_value' in st.session_state:
+            predicted_df =reverse_boxcox_transformation(predicted_df, st.session_state.lambda_value)
         return predicted_df
     except Exception as e:
         raise ValueError(f'Error in prediction: {e}')
@@ -102,8 +116,8 @@ else:
             try:
                 # Make predictions on the transformed data
                 prediction = predict_stock_price(saved_model, st.session_state.transformed_data)
-                st.write('Predicted Stock Prices (Ater Transformation):')
-                st.write(prediction)
+                st.write('Predicted Stock Prices (Original Scale):')
+                st.write(prediction_df)
             except Exception as e:
                 st.error(f'Prediction error: {e}')
         else:
