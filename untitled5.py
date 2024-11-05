@@ -45,9 +45,16 @@ def apply_boxcox_transformation(data):
 
 # Define a function to make predictions
 def predict_stock_price(model, data):
-    if isinstance(data.index, pd.DatetimeIndex):
-        data = data.reset_index(drop=True)
-    prediction = model.predict(data)
+    if 'Date' in data.columns:
+        data = data.set_index('Date')
+
+    # Pass only the transformed 'Close' column if required by the model
+    if 'Close' in data.columns:
+        transformed_data = data[['Close']]
+    else:
+        transformed_data =data
+        
+    prediction = model.predict(transfromed_data)
     return prediction
 
 # Streamlit App
@@ -87,12 +94,15 @@ else:
     # Only enable Predictions if transformed_data is available
     if st.button('Predict'):
         if st.session_state.transformed_data is not None:
-            # Make predictions on the transformed data
-            prediction = predict_stock_price(saved_model, st.session_state.transformed_data)
-            st.write('Predicted Stock Prices (Ater Transformation):')
-            st.write(prediction)
+            try:
+                # Make predictions on the transformed data
+                prediction = predict_stock_price(saved_model, st.session_state.transformed_data)
+                st.write('Predicted Stock Prices (Ater Transformation):')
+                st.write(prediction)
+            except Exception as e:
+                st.error(f'Prediction error: {e}')
         else:
-            st.write('Please etch the data first.')
+            st.write('Please fetch the data first.')
 
 
 # Required to let Streamlit instantiate our web app.
