@@ -48,8 +48,12 @@ def apply_boxcox_transformation(data):
 
 # Define a function to reverse the Box-Cox transformation
 def reverse_boxcox_transformation(predicted_df, lambda_value):
-    # Appy the inverse Box-Cox transformation
-    predicted_df['Predicted_Close'] = inv_boxcox(predicted_df['Predicted_Close'],lambda_value) 
+    if lambda_value == 0:
+        # If lambda_value is 0, we use the exponential function
+        predicted_df['Predicted_Close'] = np.exp(predicted_df['Predicted_Close'])
+    else:
+        # Use inv_boxcox for other lambda values
+        predicted_df['Predicted_Close'] = inv_boxcox(predicted_df['Predicted_Close'], lambda_value) 
     return predicted_df
     
 
