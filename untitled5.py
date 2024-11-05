@@ -54,6 +54,9 @@ def predict_stock_price(model, data):
         return prediction
     except Exception as e:
         raise ValueError(f'Error in prediction: {e}')
+
+        # Combine the dates with predictions
+            'Date': data['Date'].values,
     
 
 # Streamlit App
