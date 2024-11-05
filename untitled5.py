@@ -45,17 +45,18 @@ def apply_boxcox_transformation(data):
 
 # Define a function to make predictions
 def predict_stock_price(model, data):
-    #if 'Date' in data.columns:
-        #data = data.set_index('Date')
+    if 'Date' in data.columns:
+        data = data.set_index('Date')
 
-    # Pass only the transformed 'Close' column if required by the model
-    if 'Close' in data.columns:
-        transformed_data = data[['Close']]
-    else:
-        transformed_data =data
-        
-    prediction = model.predict(transformed_data)
-    return prediction
+    transformed_data = data[['Close']]
+
+    try:
+        # Attempt prediction with transformed data
+        prediction = model.predict(start=transformed_data.index[0], end=transformed_data.index[-1])
+        return prediction
+    except Exception as e:
+        raise VlaueError(f'Error in prediction: {e}')
+    
 
 # Streamlit App
 st.title('Stock Price Prediction App')
