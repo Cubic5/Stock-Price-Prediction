@@ -42,7 +42,7 @@ def apply_boxcox_transformation(data):
     df_arima = data[['Date','Close']].copy() # Extract the 'Close' price column
     df_arima['Close'], lambda_value = boxcox(df_arima['Close'], lmbda=0)
     df_arima['Date'] = df_arima['Date'].dt.tz_localize(None)
-    st.session_state.lambda_value = lambda_value
+    st.session_state.lambda_value = 0
     return df_arima
 
 
