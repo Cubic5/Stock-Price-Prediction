@@ -8,6 +8,7 @@ import seaborn as sns
 import yfinance as yf
 import joblib, os
 from datetime import datetime
+from statsmodels.tsa.arima.model import ARIMA
 
 # Loading the saved model
 saved_model = joblib.load('boxcox_arima_model.pkl')
@@ -33,6 +34,11 @@ def apply_boxcox_transformation(data):
     df_arima['Date'] = df_arima['Date'].dt.tz_localize(None)
     return df_arima
 
+def train_arima_model(data):
+    model = ARIMA(data['Close'], order=(3,1,2))
+    fitted_model = model.fit()
+    return fitted_model
+
 # Define a function to make predictions
 def predict_stock_price(model, data):
 
@@ -56,6 +62,23 @@ st.title('Stock Price Prediction App')
 ticker = st.text_input('Enter the stock ticker symbol (e.g. AAPL)')
 start_date = st.date_input('Select the start date')
 end_date = st.date_input('Select the end date')
+
+# Fetch new stock data, apply transformation and train a model
+if st.button('Get Data'):
+    data = fetch_stock_data(ticker, start_date, end_date)
+
+    if data.empty:
+        st.write('No data found for the selected data range or ticker.')
+    else:
+        st.write('Stock Data (Original))
+        st.write(data)
+
+        # Apply Box-Cox transformation for the current ticker
+        st.session_state.transformed_data = apply_boxcox_transformation(data)
+        st.write('Stock Data (After Box-Cox Transformation):')
+        st.write(st.session_state.transformed_data)
+        # Train a new model for the current ticker and store it in session state
+        st.session_state.model = train_arima_model(st.session_state.transformed_data)
 
 
 # Validate dates
@@ -85,10 +108,10 @@ else:
 
     # Only enable Predictions if transformed_data is available
     if st.button('Predict'):
-        if st.session_state.transformed_data is not None:
+        if 'transformed_data' in st.session_state and 'model' in st.session_state:
             try:
                 # Make predictions on the transformed data
-                prediction_df = predict_stock_price(saved_model, st.session_state.transformed_data)
+                prediction_df = predict_stock_price(st.session_state.model, st.session_state.transformed_data)
                 st.write('Predicted Stock Prices (With Dates):')
                 st.write(prediction_df)
             except Exception as e:
