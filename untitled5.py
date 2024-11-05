@@ -45,8 +45,8 @@ def apply_boxcox_transformation(data):
 
 # Define a function to make predictions
 def predict_stock_price(model, data):
-    if 'Date' in data.columns:
-        data = data.set_index('Date')
+    #if 'Date' in data.columns:
+        #data = data.set_index('Date')
 
     # Pass only the transformed 'Close' column if required by the model
     if 'Close' in data.columns:
