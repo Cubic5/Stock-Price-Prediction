@@ -47,9 +47,9 @@ def apply_boxcox_transformation(data):
 
 
 # Define a function to reverse the Box-Cox transformation
-def reverse_boxcox_transformation(predicted_data, lambda_value):
+def reverse_boxcox_transformation(predicted_df, lambda_value):
     # Appy the inverse Box-Cox transformation
-    predicted_data['Predicted_Close'] = inv_boxcox(predicted_data['Predicted_Close'],lambda_value) 
+    predicted_df['Predicted_Close'] = inv_boxcox(predicted_df['Predicted_Close'],lambda_value) 
     return predicted_data
     
 
