@@ -40,8 +40,8 @@ def apply_boxcox_transformation(data):
     data['Date'] = data['Date'].dt.tz_localize(None)
     # data = set_index('Date')
     df_arima = data[['Date','Close']].copy() # Extract the 'Close' price column
-    df_arima['Close'], lambda_value = boxcox(df_arima['Close'], lmbda=0)
-    df_arima['Date'] = df_arima['Date'].dt.tz_localize(None)
+    transformed_close = boxcox(df_arima['Close'], lmbda=0)
+    df_arima['Close'] = transformed_close # Assign transformed values back
     st.session_state.lambda_value = 0
     return df_arima
 
