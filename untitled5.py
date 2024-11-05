@@ -45,14 +45,12 @@ def apply_boxcox_transformation(data):
 
 # Define a function to make predictions
 def predict_stock_price(model, data):
-    if 'Date' in data.columns:
-        data = data.set_index('Date')
 
-    transformed_data = data[['Close']]
+    transformed_data = data[['Close']].reset_index(drop=True)
 
     try:
         # Attempt prediction with transformed data
-        prediction = model.predict(start=transformed_data.index[0], end=transformed_data.index[-1])
+        prediction = model.predict(start=0, end=len(transformed_data) - 1)
         return prediction
     except Exception as e:
         raise ValueError(f'Error in prediction: {e}')
