@@ -11,7 +11,7 @@ from datetime import datetime
 from statsmodels.tsa.arima.model import ARIMA
 
 # Loading the saved model
-saved_model = joblib.load('boxcox_arima_model.pkl')
+#saved_model = joblib.load('boxcox_arima_model.pkl')
 
 # Define a function to fetch the stock data
 def fetch_stock_data(ticker, start_date, end_date):
@@ -31,7 +31,7 @@ def apply_boxcox_transformation(data):
     # data = set_index('Date')
     df_arima = data[['Date','Close']].copy() # Extract the 'Close' price column
     df_arima['Close'], _ = boxcox(df_arima['Close'])
-    df_arima['Date'] = df_arima['Date'].dt.tz_localize(None)
+    #df_arima['Date'] = df_arima['Date'].dt.tz_localize(None)
     return df_arima
 
 def train_arima_model(data):
@@ -63,49 +63,29 @@ ticker = st.text_input('Enter the stock ticker symbol (e.g. AAPL)')
 start_date = st.date_input('Select the start date')
 end_date = st.date_input('Select the end date')
 
-# Fetch new stock data, apply transformation and train a model
-if st.button('Get Data'):
-    data = fetch_stock_data(ticker, start_date, end_date)
 
-    if data.empty:
-        st.write('No data found for the selected data range or ticker.')
-    else:
-        st.write('Stock Data (Original))
-        st.write(data)
-
-        # Apply Box-Cox transformation for the current ticker
-        st.session_state.transformed_data = apply_boxcox_transformation(data)
-        st.write('Stock Data (After Box-Cox Transformation):')
-        st.write(st.session_state.transformed_data)
-        # Train a new model for the current ticker and store it in session state
-        st.session_state.model = train_arima_model(st.session_state.transformed_data)
-
-
-# Validate dates
+# Validate dates and process data only if dates are valid
 if start_date > end_date:
     st.error('Error: Start date must be before end date.')
 else:
-    # Initialize session state for transformed_data
-    if 'transformed_data' not in st.session_state:
-        st.session_state.transformed_data = None
-
-    # Fetch and display the stock data
+    # Fetch, transform and train model when 'Get Data' is clicked
     if st.button('Get Data'):
         data = fetch_stock_data(ticker, start_date, end_date)
-
-
         if data.empty:
-            st.write('No data found for the select date range and ticker.')
+            st.write('No data found for the selected date range and ticker.')
         else:
             st.write('Stock Data (Original):')
             st.write(data)
 
-            # Apply the Box-Cox transformation
-            st.session_state.transformed_data = apply_boxcox_transformation(data)
+            # Apply the Box-Cox transformation for the current ticker
+            st.session_state.transformed_data = apply_boxcox_transfformation(data)
             st.write('Stock Data (After Box-Cox Transformation):')
-            st.write(st.session_state.transformed_data)
+            st.write(sr.session_state.transformed_data)
 
+            # Train a new model and store it in session state
+            st.session_state.model = train_arima_model(st.session_state.transformed_data
 
+  
     # Only enable Predictions if transformed_data is available
     if st.button('Predict'):
         if 'transformed_data' in st.session_state and 'model' in st.session_state:
