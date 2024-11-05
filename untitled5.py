@@ -54,7 +54,7 @@ def predict_stock_price(model, data):
     else:
         transformed_data =data
         
-    prediction = model.predict(transfromed_data)
+    prediction = model.predict(transformed_data)
     return prediction
 
 # Streamlit App
