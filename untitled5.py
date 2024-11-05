@@ -55,7 +55,7 @@ def predict_stock_price(model, data):
         prediction = model.predict(start=transformed_data.index[0], end=transformed_data.index[-1])
         return prediction
     except Exception as e:
-        raise VlaueError(f'Error in prediction: {e}')
+        raise ValueError(f'Error in prediction: {e}')
     
 
 # Streamlit App
