@@ -40,7 +40,12 @@ def predict_stock_price(model, data):
 
     try:
         prediction = model.predict(start=0, end=len(transformed_data) - 1)
-        return prediction
+        # Combine the dates with the predictions
+        predicted_df = pd.DataFrame({
+            'Date': data['Date'].values,
+            'Predicted_Close': prediction
+        })
+        return predicted_df
     except Exception as e:
         raise ValueError(f'Error in prediction: {e}')
 
@@ -84,8 +89,8 @@ else:
             try:
                 # Make predictions on the transformed data
                 prediction = predict_stock_price(saved_model, st.session_state.transformed_data)
-                st.write('Predicted Stock Prices (Ater Transformation):')
-                st.write(prediction)
+                st.write('Predicted Stock Prices (With Dates):')
+                st.write(prediction_df)
             except Exception as e:
                 st.error(f'Prediction error: {e}')
         else:
