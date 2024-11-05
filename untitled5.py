@@ -88,8 +88,8 @@ else:
                 st.write(prediction)
             except Exception as e:
                 st.error(f'Prediction error: {e}')
-    else"
-    st.write('Please fetch the data first')
+        else:
+            st.write('Please fetch the data first')
 
 
 # Required to let Streamlit instantiate our web app.
