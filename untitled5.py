@@ -78,7 +78,7 @@ else:
             st.write(data)
 
             # Apply the Box-Cox transformation for the current ticker
-            st.session_state.transformed_data = apply_boxcox_transfformation(data)
+            st.session_state.transformed_data = apply_boxcox_transformation(data)
             st.write('Stock Data (After Box-Cox Transformation):')
             st.write(st.session_state.transformed_data)
 
