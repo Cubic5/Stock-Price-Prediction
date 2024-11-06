@@ -8,6 +8,7 @@ import seaborn as sns
 import yfinance as yf
 import joblib, os
 from datetime import datetime
+from pandas.tseries.offsets import DateOffset
 from statsmodels.tsa.arima.model import ARIMA
 
 # Loading the saved model
@@ -52,7 +53,7 @@ def predict_stock_price(model, data):
         prediction_dates = pd.date_range(start=last_date, periods=len(prediction) + 1, freq='B')[1:]
         # Combine the dates with the predictions
         predicted_df = pd.DataFrame({
-            'Date': data['Date'].values,
+            'Date': prediction_dates,
             'Predicted_Close': prediction
         })
         return predicted_df
