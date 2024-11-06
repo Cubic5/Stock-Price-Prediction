@@ -31,8 +31,10 @@ def apply_boxcox_transformation(data):
     data['Date'] = data['Date'].dt.tz_localize(None)
     # data = set_index('Date')
     df_arima = data[['Date','Close']].copy() # Extract the 'Close' price column
-    df_arima['Close'], lambda_value = boxcox(df_arima['Close'])
+    df_arima['Close'], boxcox_lambda = boxcox(df_arima['Close'])
     #df_arima['Date'] = df_arima['Date'].dt.tz_localize(None)
+    st.session_state.boxcox_lambda = boxcox_lambda
+    
     return df_arima
 
 def train_arima_model(data):
@@ -46,7 +48,11 @@ def predict_stock_price(model, data):
     transformed_data = data[['Close']].reset_index(drop=True)
 
     try:
+        # Generate a date range to make predictions
         prediction = model.predict(start=0, end=len(transformed_data) - 1)
+
+        # Apply inverse Box-Cox transformation to the prediction
+        inverse_predicted_close = inv_boxcox(prediction, st.session_state.boxcox_lambda)
 
         # Generate a date range starting from the last date in the original data
         last_date = data['Date'].iloc[-1]
@@ -54,7 +60,7 @@ def predict_stock_price(model, data):
         # Combine the dates with the predictions
         predicted_df = pd.DataFrame({
             'Date': prediction_dates,
-            'Predicted_Close': prediction
+            'Predicted_Close': inverse_predicted_close
         })
         return predicted_df
     except Exception as e:
