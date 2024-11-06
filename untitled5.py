@@ -31,9 +31,8 @@ def apply_boxcox_transformation(data):
     # data = set_index('Date')
     df_arima = data[['Date','Close']].copy() # Extract the 'Close' price column
     df_arima['Close'], lambda_value = boxcox(df_arima['Close'])
-    st.write(f'Lambda value used for Box-Cox transformation: {lambda_value}')
     #df_arima['Date'] = df_arima['Date'].dt.tz_localize(None)
-    return df_arima, lambda_value
+    return df_arima
 
 def train_arima_model(data):
     model = ARIMA(data['Close'], order=(3,1,2))
@@ -83,10 +82,7 @@ else:
             st.write(data)
 
             # Apply the Box-Cox transformation for the current ticker
-            transformed_data, lambda_value = apply_boxcox_transformation(data)
-            st.session_state.transformed_data = transformed_data
-            st.session_state.lambda_value = lambda_value
-            st.write(f'Lambda value used for Box-Cox transformation: {lambda_value}')
+            st.session_state.transformed_data = apply_boxcox_transformation(data)
             st.write('Stock Data (After Box-Cox Transformation):')
             st.write(st.session_state.transformed_data)
 
@@ -100,7 +96,7 @@ else:
             try:
                 # Make predictions on the transformed data
                 prediction_df = predict_stock_price(st.session_state.model, st.session_state.transformed_data)
-                st.write('Predicted Stock Prices (With Dates):')
+                st.write('Predicted Stock Prices :')
                 st.write(prediction_df)
             except Exception as e:
                 st.error(f'Prediction error: {e}')
