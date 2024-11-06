@@ -73,17 +73,20 @@ end_date = st.date_input('Select the end date')
 if start_date > end_date:
     st.error('Error: Start date must be before end date.')
 else:
-    # Fetch, transform and train model when 'Get Data' is clicked
+    # Fetch new stock data, apply transform and train a model when 'Get Data' is clicked
     if st.button('Get Data'):
         data = fetch_stock_data(ticker, start_date, end_date)
         if data.empty:
-            st.write('No data found for the selected date range and ticker.')
+            st.write('No data found for the selected date range or ticker.')
         else:
             st.write('Stock Data (Original):')
             st.write(data)
 
             # Apply the Box-Cox transformation for the current ticker
-            st.session_state.transformed_data = apply_boxcox_transformation(data)
+            transformed_data, lambda_value = apply_boxcox_transformation(data)
+            st.session_state.transformed_data = transformed_data
+            st.session_state.lambda_value = lambda_value
+            st.write(f'Lambda value used for Box-Cox transformation: {lambda_value}')
             st.write('Stock Data (After Box-Cox Transformation):')
             st.write(st.session_state.transformed_data)
 
