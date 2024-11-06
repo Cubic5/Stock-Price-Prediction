@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import boxcox
+from scipy.special import inv_boxcox
 import seaborn as sns
 import yfinance as yf
 import joblib, os
