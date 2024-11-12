@@ -28,7 +28,7 @@ def fetch_stock_data(ticker, start_date, end_date):
         return stock_data
     except Exception as e:
             st.error(f"Error fetching data: {e}")
-        return pd.DataFrame()
+            return pd.DataFrame()
 
 # Define a function to apply Box-Cox transformation
 def apply_boxcox_transformation(data):
