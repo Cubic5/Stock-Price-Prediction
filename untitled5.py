@@ -9,6 +9,7 @@ from scipy.special import inv_boxcox
 import seaborn as sns
 import yfinance as yf
 import joblib, os
+from streamlit_option_menu import option_menu
 from datetime import datetime
 from pandas.tseries.offsets import DateOffset
 from statsmodels.tsa.arima.model import ARIMA
