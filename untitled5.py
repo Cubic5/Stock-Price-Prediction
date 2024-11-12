@@ -120,7 +120,7 @@ def plot_stock_data(data, prediction=None):
 
     # plot predicted data if available
     if prediction is not None:
-        fig.add_trace(go.Scatter(x=data['Date'], y=prediction['Predicted Close'], mode='lines', name="predicted Data"]))
+        fig.add_trace(go.Scatter(x=data['Date'], y=prediction['Predicted Close'], mode='lines', name=["predicted Data"]))
 
     fig.update_layout(title='Stock Price Prediction', xaxis_title='Date', yaxis_title='Price')
     st.plotly_chart(fig)
