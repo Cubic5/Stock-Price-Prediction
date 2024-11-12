@@ -58,8 +58,14 @@ def predict_stock_price(model, data):
     forecast_horizon = 10 # predicting 10 days ahead
 
     try:
-        # Generate a date range to make predictions
-        forecast, conf_int = model.predict(n_periods=forecast_horizon, return_conf_int=True)
+        # Generate forecast iteratively, feeding each new prediction as input to the model
+        forecast = []
+        last_observed_value = data['Close'].iloc[-1]
+        for _ in range(forecast_horizon):
+            next_pred =model.predict(n_periods=1)[0] # Get the next step prediction
+            forecast.append(next_pred)
+            # update the model with the new observed value
+            model.update([next_pred])
 
 
         # Generate a date range starting from the last date in the original data
