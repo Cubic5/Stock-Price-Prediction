@@ -55,11 +55,11 @@ def train_auto_arima_model(data):
 # Define a function to make predictions
 def predict_stock_price(model, data):
 
-    transformed_data = data[['Close']].reset_index(drop=True)
+    forecast_horizon = 10 # predicting 10 days ahead
 
     try:
         # Generate a date range to make predictions
-        forecast, conf_int = model.predict(n_periods=len(transformed_data), return_conf_int=True)
+        forecast, conf_int = model.predict(n_periods=forecat_horizon, return_conf_int=True)
 
 
         # Generate a date range starting from the last date in the original data
