@@ -11,7 +11,6 @@ import joblib, os
 from datetime import datetime
 from pandas.tseries.offsets import DateOffset
 from statsmodels.tsa.arima.model import ARIMA
-import pmdarima as pm
 
 # Loading the saved model
 #saved_model = joblib.load('boxcox_arima_model.pkl')
@@ -50,25 +49,21 @@ def predict_stock_price(model, data):
     transformed_data = data[['Close']].reset_index(drop=True)
 
     try:
-        # perform prediction on the transformed data
+        # Generate a date range to make predictions
         prediction = model.predict(start=0, end=len(transformed_data) - 1)
 
+        # Apply inverse Box-Cox transformation to the prediction
+        inverse_predicted_close = inv_boxcox(prediction, st.session_state.boxcox_lambda)
 
         # Generate a date range starting from the last date in the original data
         last_date = data['Date'].iloc[-1]
         prediction_dates = pd.date_range(start=last_date, periods=len(prediction) + 1, freq='B')[1:]
-        
-        # Apply inverse Box-Cox transformation to the prediction
-        inverse_predicted_close = inv_boxcox(forecast, st.session_state.boxcox_lambda)
-        
-        
         # Combine the dates with the predictions
         predicted_df = pd.DataFrame({
             'Date': prediction_dates,
             'Predicted_Close': inverse_predicted_close
         })
         return predicted_df
-        
     except Exception as e:
         raise ValueError(f'Error in prediction: {e}')
 
