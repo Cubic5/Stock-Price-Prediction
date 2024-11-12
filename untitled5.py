@@ -40,7 +40,7 @@ def apply_boxcox_transformation(data):
     return df_arima
 
 def train_auto_arima_model(data):
-    model = auto_arima(
+    model = pm.auto_arima(
         data['Close'],
         start_p=1, start_q=1,
         max_p=5, max_q=5,
