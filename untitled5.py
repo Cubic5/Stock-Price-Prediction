@@ -78,6 +78,7 @@ with st.sidebar:
                 menu_icon = 'list'
                 options = [ 'Home', 'Predictions', 'Technical Analysis', 'Contacts']
                 icons = ['house', 'gear', 'bar-chart-line', 'envelope']
+)
 
 # Get user input
 ticker = st.text_input('Enter the stock ticker symbol (e.g. AAPL)')
