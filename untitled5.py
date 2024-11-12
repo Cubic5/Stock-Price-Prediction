@@ -116,11 +116,11 @@ def plot_stock_data(data, prediction=None):
     fig = go.Figure()
 
     # Plot historical data
-    fig.add_trace(go.Scattter(x=data['Date'], y=data['Close'], mode='lines', name='Historical Data')
+    fig.add_trace(go.Scattter(x=data['Date'], y=data['Close'], mode='lines', name='Historical Data'))
 
     # plot predicted data if available
     if prediction is not None:
-        fig.add_trace(go.Scatter(x=data['Date'], y=prediction['Predicted Close'], mode='lines', name=["predicted Data"])
+        fig.add_trace(go.Scatter(x=data['Date'], y=prediction['Predicted Close'], mode='lines', name=["predicted Data"]))
 
     fig.update_layout(title='Stock Price Prediction', xaxis_title='Date', yaxis_title='Price')
     st.plotly_chart(fig)
