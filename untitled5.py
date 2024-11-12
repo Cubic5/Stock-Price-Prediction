@@ -3,6 +3,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 from scipy.stats import boxcox
 from scipy.special import inv_boxcox
 import seaborn as sns
@@ -110,6 +111,20 @@ else:
                 st.error(f'Prediction error: {e}')
         else:
             st.write('Please fetch the data first')
+
+def plot_stock_data(data, prediction=None):
+    fig = go.Figure()
+
+    # Plot historical data
+    fig.add_trace(go.Scattter(x=data['Date'], y=data['Close'], mode='lines', name='Historical Data')
+
+    # plot predicted data if available
+    if prediction is not None:
+        fig.add_trace(go.Scatter(x=data['Date'], y=prediction['Predicted Close'], mode='lines', name="predicted Data"]
+
+    fig.update_layout(title='Stock Price Prediction', xaxis_title='Date', yaxis_title='Price')
+    st.plotly_chart(fig)
+    
 
 
 # Required to let Streamlit instantiate our web app.
