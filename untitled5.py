@@ -75,8 +75,8 @@ st.title('Stock Price Prediction App')
 with st.sidebar:
     selected = option_menu(
                 menu_title = 'Navigation Menu',
-                menu_icon = 'list'
-                options = [ 'Home', 'Predictions', 'Technical Analysis', 'Contacts']
+                menu_icon = 'list',
+                options = [ 'Home', 'Predictions', 'Technical Analysis', 'Contacts'],
                 icons = ['house', 'gear', 'bar-chart-line', 'envelope']
 )
 
