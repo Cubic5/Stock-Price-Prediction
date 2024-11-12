@@ -40,7 +40,7 @@ def apply_boxcox_transformation(data):
     return df_arima
 
 def train_arima_model(data):
-    model = pm.auto_arima(data['Close'], seasonal=False, stepwise=True)
+    model = pm.arima.auto_arima(data['Close'], seasonal=False, stepwise=True)
     fitted_model = model.fit()
     return fitted_model
 
