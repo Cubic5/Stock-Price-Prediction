@@ -65,7 +65,7 @@ def predict_stock_price(model, data):
             next_pred =model.predict(n_periods=1)[0] # Get the next step prediction
             forecast.append(next_pred)
             # update the model with the new observed value
-            model.update([next_pred])
+            model.append([next_pred])
 
 
         # Generate a date range starting from the last date in the original data
