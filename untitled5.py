@@ -116,7 +116,7 @@ def plot_stock_data(data, prediction=None):
     fig = go.Figure()
 
     # Plot historical data
-    fig.add_trace(go.Scattter(x=data['Date'], y=data['Close'], mode='lines', name='Historical Data')
+    fig.add_trace(go.Scattter(x=data['Date'], y=data['Close'], mode='lines', name='Historical Data'))
 
     # plot predicted data if available
     if prediction is not None:
