@@ -16,9 +16,6 @@ from statsmodels.tsa.arima.model import ARIMA
 # Loading the saved model
 #saved_model = joblib.load('boxcox_arima_model.pkl')
 
-
-    
-    
 # Define a function to fetch the stock data
 def fetch_stock_data(ticker, start_date, end_date):
     try:
@@ -27,8 +24,8 @@ def fetch_stock_data(ticker, start_date, end_date):
             raise ValueError('No data available for the selected date range and ticker.')
         return stock_data
     except Exception as e:
-            st.error(f"Error fetching data: {e}")
-            return pd.DataFrame()
+        st.error(f"Error fetching data: {e}")
+        return pd.DataFrame()
 
 # Define a function to apply Box-Cox transformation
 def apply_boxcox_transformation(data):
@@ -112,18 +109,18 @@ else:
                 st.write(prediction_df)
             except Exception as e:
                 st.error(f'Prediction error: {e}')
-            else:
-                st.write('Please fetch the data first')
+        else:
+            st.write('Please fetch the data first')
 
 def plot_stock_data(data, prediction=None):
     fig = go.Figure()
 
     # Plot historical data
-    fig.add_trace(go.Scattter(x=data['Date'], y=data['Close'], mode='lines', name='Historical Data'))
+    fig.add_trace(go.Scattter(x=data['Date'], y=data['Close'], mode='lines', name='Historical Data')
 
     # plot predicted data if available
     if prediction is not None:
-        fig.add_trace(go.Scatter(x=data['Date'], y=prediction['Predicted Close'], mode='lines', name=["predicted Data"]))
+        fig.add_trace(go.Scatter(x=data['Date'], y=prediction['Predicted Close'], mode='lines', name="predicted Data"]
 
     fig.update_layout(title='Stock Price Prediction', xaxis_title='Date', yaxis_title='Price')
     st.plotly_chart(fig)
