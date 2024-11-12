@@ -39,32 +39,24 @@ def apply_boxcox_transformation(data):
     
     return df_arima
 
-def train_auto_arima_model(data):
-    model = pm.auto_arima(
-        data['Close'],
-        start_p=0, start_q=0,
-        max_p=5, max_q=5,
-        seasonal=False,
-        trace=True,
-        error_action='ignore',  
-        suppress_warnings=True,
-        stepwise=True
-    )
-    return model
+def train_arima_model(data):
+    model = ARIMA(data['Close'], order=(3,1,2))
+    fitted_model = model.fit()
+    return fitted_model
 
 # Define a function to make predictions
 def predict_stock_price(model, data):
 
-    forecast_horizon = 10 # predicting 10 days ahead
+    transformed_data = data[['Close']].reset_index(drop=True)
 
     try:
-        # Generate forecast iteratively, feeding each new prediction as input to the model
-        forecast= model.predict(n_periods=forecast_horizon, return_conf_int=True)
+        # perform prediction on the transformed data
+        prediction = model.predict(start=0, end=len(transformed_data) - 1)
 
 
         # Generate a date range starting from the last date in the original data
         last_date = data['Date'].iloc[-1]
-        prediction_dates = pd.date_range(start=last_date, periods=forecast_horizon + 1, freq='B')[1:]
+        prediction_dates = pd.date_range(start=last_date, periods=len(prediction) + 1, freq='B')[1:]
         
         # Apply inverse Box-Cox transformation to the prediction
         inverse_predicted_close = inv_boxcox(forecast, st.session_state.boxcox_lambda)
@@ -108,7 +100,7 @@ else:
             st.write(st.session_state.transformed_data)
 
             # Train a new model and store it in session state
-            st.session_state.model = train_auto_arima_model(st.session_state.transformed_data)
+            st.session_state.model = train_arima_model(st.session_state.transformed_data)
 
   
     # Only enable Predictions if transformed_data is available
