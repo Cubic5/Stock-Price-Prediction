@@ -11,6 +11,7 @@ import joblib, os
 from datetime import datetime
 from pandas.tseries.offsets import DateOffset
 from statsmodels.tsa.arima.model import ARIMA
+import pdarima as pm
 
 # Loading the saved model
 #saved_model = joblib.load('boxcox_arima_model.pkl')
@@ -39,7 +40,7 @@ def apply_boxcox_transformation(data):
     return df_arima
 
 def train_arima_model(data):
-    model = ARIMA(data['Close'], order=(3,1,2))
+    model = pm.auto_arima(data['Close'], seasonal=False, stepwise=True)
     fitted_model = model.fit()
     return fitted_model
 
