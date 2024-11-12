@@ -59,7 +59,7 @@ def predict_stock_price(model, data):
 
     try:
         # Generate a date range to make predictions
-        forecast, conf_int = model.predict(n_periods=forecat_horizon, return_conf_int=True)
+        forecast, conf_int = model.predict(n_periods=forecast_horizon, return_conf_int=True)
 
 
         # Generate a date range starting from the last date in the original data
