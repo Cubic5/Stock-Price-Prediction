@@ -42,7 +42,7 @@ def apply_boxcox_transformation(data):
 def train_auto_arima_model(data):
     model = pm.auto_arima(
         data['Close'],
-        start_p=1, start_q=1,
+        start_p=0, start_q=0,
         max_p=5, max_q=5,
         seasonal=False,
         trace=True,
@@ -59,7 +59,7 @@ def predict_stock_price(model, data):
 
     try:
         # Generate forecast iteratively, feeding each new prediction as input to the model
-        forecast, conf_int = model.predict(n_periods=forecast_horizon, return_conf_int=True)
+        forecast= model.predict(n_periods=forecast_horizon, return_conf_int=True)
 
 
         # Generate a date range starting from the last date in the original data
