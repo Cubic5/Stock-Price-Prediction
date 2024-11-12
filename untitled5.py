@@ -81,6 +81,10 @@ with st.sidebar:
                 icons = ['house', 'gear', 'bar-chart-line', 'envelope']
 )
 
+if selected == 'Home':
+    st.subheader('Stock Price Prediction App')
+    
+
 # Get user input
 ticker = st.text_input('Enter the stock ticker symbol (e.g. AAPL)')
 start_date = st.date_input('Select the start date')
