@@ -11,7 +11,7 @@ import joblib, os
 from datetime import datetime
 from pandas.tseries.offsets import DateOffset
 from statsmodels.tsa.arima.model import ARIMA
-import pdarima as pm
+import pmdarima as pm
 
 # Loading the saved model
 #saved_model = joblib.load('boxcox_arima_model.pkl')
