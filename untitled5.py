@@ -72,8 +72,12 @@ def predict_stock_price(model, data):
 st.title('Stock Price Prediction App')
 
 # Creating sidebar with selection box
-options = ['Prediction', 'Technical Analysis']
-selection =st.sidebar.selectbox('Choose Option', options)
+with st.sidebar:
+    selected = option_menu(
+                menu_title = 'Navigation Menu',
+                menu_icon = 'list'
+                options = [ 'Home', 'Predictions', 'Technical Analysis', 'Contacts']
+                icons = ['house', 'gear', 'bar-chart-line', 'envelope']
 
 # Get user input
 ticker = st.text_input('Enter the stock ticker symbol (e.g. AAPL)')
