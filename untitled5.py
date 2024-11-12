@@ -64,7 +64,7 @@ def predict_stock_price(model, data):
 
         # Generate a date range starting from the last date in the original data
         last_date = data['Date'].iloc[-1]
-        prediction_dates = pd.date_range(start=last_date, periods=len(forecast) + 1, freq='B')[1:]
+        prediction_dates = pd.date_range(start=last_date, periods=forecast_horizon + 1, freq='B')[1:]
         
         # Apply inverse Box-Cox transformation to the prediction
         inverse_predicted_close = inv_boxcox(forecast, st.session_state.boxcox_lambda)
