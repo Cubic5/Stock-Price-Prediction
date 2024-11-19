@@ -13,6 +13,7 @@ from streamlit_option_menu import option_menu
 from datetime import datetime
 from pandas.tseries.offsets import DateOffset
 from statsmodels.tsa.arima.model import ARIMA
+from pmdarima import auto_arima
 
 # Loading the saved model
 #saved_model = joblib.load('boxcox_arima_model.pkl')
@@ -26,7 +27,7 @@ def fetch_stock_data(ticker, start_date, end_date):
         return stock_data
     except Exception as e:
         st.error(f"Error fetching data: {e}")
-        return pd.DataFrame().head(), pd.DataFrame().tail()
+        return pd.DataFrame()
 
 # Define a function to apply Box-Cox transformation
 def apply_boxcox_transformation(data):
@@ -40,8 +41,29 @@ def apply_boxcox_transformation(data):
     
     return df_arima
 
+# Define a function to dynamically determine ARIMA order
+def determine_arima_order(data):
+    try:
+        stepwise_model = auto_arima(
+            data['Close'],
+            start_p = 0, start_q=0,
+            max_p=5, max_q=5,
+            d=None,
+            seasonal=False,
+            trace=True,
+            error_action='ignore',
+            supress_warnings=True,
+            stepwise=True
+        )
+        return stepwise_model.order
+    except Exception as e:
+        st.error(f'Error determining ARIMA order: {e}')
+        return (1, 1, 1) # fallback to deafault order if auto_arima fails
+
 def train_arima_model(data):
-    model = ARIMA(data['Close'], order=(3,1,2))
+    order = determine_arima_order(data)
+    st.write(f'Using ARIMA order: {order}')
+    model = ARIMA(data['Close'], order=order)
     fitted_model = model.fit()
     return fitted_model
 
